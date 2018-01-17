@@ -1,0 +1,35 @@
+{
+  "name": "kkutu-autoinserter",
+  "version": "1.0.0",
+  "description": "JSON으로 작성된 데이터를 기반으로 끄투에 단어 데이터를 자동으로 집어넣어줍니다.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/small-sunshines/kkutu-autoinserter.git"
+  },
+  "author": "small-sunshines",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/small-sunshines/kkutu-autoinserter/issues"
+  },
+  "homepage": "https://github.com/small-sunshines/kkutu-autoinserter#readme",
+  "dependencies": {
+    "log4js": "^2.4.1",
+    "pg": "^7.4.1",
+    "pg-escape": "^0.2.0",
+    "pg-promise": "^7.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^4.15.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-html": "^4.0.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}
