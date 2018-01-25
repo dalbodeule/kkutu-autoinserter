@@ -25,10 +25,11 @@ async function inputWord (db, word, callback) {
     console.log('new word data: ')
     console.log(word)
     let i = await db.any('SELECT * FROM public.kkutu_ko WHERE _id = $1', word.id)
+    let dbWord = i[0]
     console.log('default word data: ')
-    console.log(i[0])
+    console.log(dbWord)
 
-    if (!i[0]) {
+    if (!dbWord) {
       let thisOffset = 0
       word.mean = word.mean.replace(/(\/mean)/g, (match, p1, offset, string) => {
         thisOffset++
@@ -40,31 +41,30 @@ async function inputWord (db, word, callback) {
       /* console.log('INSERT INTO public.kkutu_ko (_id, type, mean, flag, theme) VALUES (' + word.id + ', ' +
       word.type + ', ' + word.mean + ', ' + word.flag + ', ' + word.theme + ')') // test data */
     } else {
-      let themeOffset = (i[0].theme.match((/,/g)) || []).length
+      let themeOffset = (dbWord.theme.match((/,/g)) || []).length
       let thisOffset = 1
       word.mean = word.mean.replace(/(\/mean)/g, (match, p1, offset, string) => {
         thisOffset++
         return '＂' + (themeOffset + thisOffset) + '＂'
       })
-      console.log(i[0].mean !== word.mean)
-      if (i[0].type !== word.type || i[0].mean !== word.mean || i[0].theme !== word.theme) {
+      if (dbWord.type === word.type || dbWord.mean === word.mean || dbWord.theme === word.theme) {
+        console.log('same word. not update.')
+      } else {
         await db.any('UPDATE public.kkutu_ko SET type=$1, mean=$2, theme=$3 WHERE _id = $4', [
-          i[0].type + ',' + word.type,
-          i[0].mean + '  ' + word.mean,
-          i[0].theme + ',' + word.theme,
+          dbWord.type + ',' + word.type,
+          dbWord.mean + '  ' + word.mean,
+          dbWord.theme + ',' + word.theme,
           word.id
         ])
-        /* console.log('UPDATE public.kkutu_ko SET type=' + i[0].type + ',' + word.type +
-          ', mean=' + i[0].mean + '  ' + word.mean + ', theme=' + i[0].theme + ',' + word.theme +
+        /* console.log('UPDATE public.kkutu_ko SET type=' + dbWord.type + ',' + word.type +
+          ', mean=' + dbWord.mean + '  ' + word.mean + ', theme=' + dbWord.theme + ',' + word.theme +
           ' WHERE _id = ' + word.id) // test code */
-      } else {
-        console.log('same word. not update.')
       }
     }
     console.log('success')
     i = await db.any('SELECT * FROM public.kkutu_ko WHERE _id = $1', word.id)
     console.log('inputed data: ')
-    console.log(i[0])
+    console.log(dbWord)
     callback()
   } catch (e) {
     callback(e)
